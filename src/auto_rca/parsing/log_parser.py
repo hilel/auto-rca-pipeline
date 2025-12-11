@@ -27,10 +27,15 @@ class LogParser:
     }
     
     def __init__(self):
-        self.compiled_patterns = {
-            key: [re.compile(p, re.IGNORECASE) if isinstance(p, str) else [re.compile(pp, re.IGNORECASE) for pp in p]]
-            for key, p in self.PATTERNS.items()
-        }
+        # Compile patterns for better performance
+        self.compiled_patterns = {}
+        for key, pattern in self.PATTERNS.items():
+            if isinstance(pattern, list):
+                # Compile each pattern in the list
+                self.compiled_patterns[key] = [re.compile(p, re.IGNORECASE) for p in pattern]
+            else:
+                # Compile single pattern
+                self.compiled_patterns[key] = re.compile(pattern, re.IGNORECASE)
     
     def parse_log(self, log_entry: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -132,8 +137,9 @@ class LogParser:
         if parsed['timestamp']:  # Already extracted from structured data
             return
         
-        for pattern in self.PATTERNS['timestamp']:
-            match = re.search(pattern, text)
+        timestamp_patterns = self.compiled_patterns['timestamp']
+        for pattern in timestamp_patterns:
+            match = pattern.search(text)
             if match:
                 try:
                     parsed['timestamp'] = self._parse_timestamp(match.group(0))
@@ -156,47 +162,55 @@ class LogParser:
         if parsed['log_level']:  # Already extracted
             return
         
-        match = re.search(self.PATTERNS['log_level'], text, re.IGNORECASE)
+        pattern = self.compiled_patterns['log_level']
+        match = pattern.search(text)
         if match:
             parsed['log_level'] = match.group(1).upper()
     
     def _extract_identifiers(self, text: str, parsed: Dict[str, Any]) -> None:
         """Extract various identifiers from text"""
         # IP Address
-        match = re.search(self.PATTERNS['ip_address'], text)
+        pattern = self.compiled_patterns['ip_address']
+        match = pattern.search(text)
         if match:
             parsed['ip_address'] = match.group(0)
         
         # User ID
-        match = re.search(self.PATTERNS['user_id'], text, re.IGNORECASE)
+        pattern = self.compiled_patterns['user_id']
+        match = pattern.search(text)
         if match:
             parsed['user_id'] = match.group(1)
         
         # Request ID
-        match = re.search(self.PATTERNS['request_id'], text, re.IGNORECASE)
+        pattern = self.compiled_patterns['request_id']
+        match = pattern.search(text)
         if match:
             parsed['request_id'] = match.group(1)
         
         # Session ID
-        match = re.search(self.PATTERNS['session_id'], text, re.IGNORECASE)
+        pattern = self.compiled_patterns['session_id']
+        match = pattern.search(text)
         if match:
             parsed['session_id'] = match.group(1)
     
     def _extract_http_info(self, text: str, parsed: Dict[str, Any]) -> None:
         """Extract HTTP-related information"""
         # HTTP Method
-        match = re.search(self.PATTERNS['http_method'], text)
+        pattern = self.compiled_patterns['http_method']
+        match = pattern.search(text)
         if match:
             parsed['http_method'] = match.group(1)
         
         # Status Code
-        match = re.search(self.PATTERNS['status_code'], text)
+        pattern = self.compiled_patterns['status_code']
+        match = pattern.search(text)
         if match:
             parsed['status_code'] = int(match.group(0))
     
     def _extract_exception(self, text: str, parsed: Dict[str, Any]) -> None:
         """Extract exception information"""
-        match = re.search(self.PATTERNS['exception'], text)
+        pattern = self.compiled_patterns['exception']
+        match = pattern.search(text)
         if match:
             parsed['exception'] = match.group(1).strip()
     

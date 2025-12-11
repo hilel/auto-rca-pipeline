@@ -1,6 +1,7 @@
 """Vectorization module for converting text to sequences for LSTM"""
 
 import numpy as np
+import re
 from typing import List, Dict, Any, Optional, Tuple
 import pickle
 from pathlib import Path
@@ -120,7 +121,6 @@ class TextVectorizer:
         # Convert to lowercase and split by whitespace and common punctuation
         text = text.lower()
         # Keep alphanumeric and common separators
-        import re
         tokens = re.findall(r'\w+', text)
         return tokens
     
