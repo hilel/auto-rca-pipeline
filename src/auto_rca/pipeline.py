@@ -4,12 +4,12 @@ from typing import List, Dict, Any, Optional
 from pathlib import Path
 import numpy as np
 
-from ..ingestion import LogReader
-from ..parsing import LogParser
-from ..sessionization import SessionGrouper
-from ..vectorization import TextVectorizer
-from ..ml_analysis import LSTMAnalyzer
-from ..config import settings
+from auto_rca.ingestion import LogReader
+from auto_rca.parsing import LogParser
+from auto_rca.sessionization import SessionGrouper
+from auto_rca.vectorization import TextVectorizer
+from auto_rca.ml_analysis import LSTMAnalyzer
+from auto_rca.config import settings
 
 
 class RCAPipeline:

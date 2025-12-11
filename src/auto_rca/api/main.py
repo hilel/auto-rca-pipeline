@@ -8,8 +8,8 @@ import tempfile
 import shutil
 from pathlib import Path
 
-from ..pipeline import RCAPipeline
-from ..config import settings
+from auto_rca.pipeline import RCAPipeline
+from auto_rca.config import settings
 
 # Initialize FastAPI app
 app = FastAPI(

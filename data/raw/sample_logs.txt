@@ -1,0 +1,50 @@
+[2025-12-11 13:01:49] INFO - Committing transaction
+[2025-12-11 13:01:50] INFO - Processing request
+[2025-12-11 13:02:05] ERROR - TimeoutException: Request timeout after 30s
+[2025-12-11 13:02:13] ERROR - NullPointerException: Object reference not set
+[2025-12-11 13:02:21] CRITICAL - NullPointerException: Object reference not set
+[2025-12-11 13:02:19] INFO - Validating input parameters
+[2025-12-11 13:02:49] DEBUG - Starting transaction
+[2025-12-11 13:02:10] CRITICAL - TimeoutException: Request timeout after 30s
+[2025-12-11 13:02:37] DEBUG - Processing request
+[2025-12-11 13:03:19] WARN - Cache hit
+[2025-12-11 13:02:59] INFO - Starting transaction
+[2025-12-11 13:02:55] ERROR - OutOfMemoryException: Heap space exhausted
+[2025-12-11 13:02:25] CRITICAL - ValidationException: Invalid input parameters
+[2025-12-11 13:03:46] INFO - Request completed successfully
+[2025-12-11 13:04:09] DEBUG - Request completed successfully
+[2025-12-11 13:04:19] INFO - Rolling back transaction
+[2025-12-11 13:04:13] ERROR - NullPointerException: Object reference not set
+[2025-12-11 13:04:39] DEBUG - Cache miss, fetching from database
+[2025-12-11 13:03:55] DEBUG - Processing request
+[2025-12-11 13:02:08] INFO - Sending notification
+[2025-12-11 13:03:29] CRITICAL - AuthenticationException: Invalid credentials
+[2025-12-11 13:03:55] INFO - Querying database
+[2025-12-11 13:05:07] DEBUG - Processing request
+[2025-12-11 13:02:35] DEBUG - Sending notification
+[2025-12-11 13:05:49] WARN - Starting transaction
+[2025-12-11 13:05:59] WARN - Cache miss, fetching from database
+[2025-12-11 13:04:25] DEBUG - Request completed successfully
+[2025-12-11 13:04:04] ERROR - ValidationException: Invalid input parameters
+[2025-12-11 13:04:37] INFO - Cache miss, fetching from database
+[2025-12-11 13:04:43] INFO - Sending notification
+[2025-12-11 13:03:49] INFO - Committing transaction
+[2025-12-11 13:02:20] WARN - Processing request
+[2025-12-11 13:06:05] CRITICAL - OutOfMemoryException: Heap space exhausted
+[2025-12-11 13:02:55] DEBUG - Processing request
+[2025-12-11 13:04:05] ERROR - OutOfMemoryException: Heap space exhausted
+[2025-12-11 13:07:39] INFO - Validating input parameters
+[2025-12-11 13:02:25] DEBUG - Validating input parameters
+[2025-12-11 13:07:22] INFO - Validating input parameters
+[2025-12-11 13:07:31] ERROR - NullPointerException: Object reference not set
+[2025-12-11 13:08:19] INFO - Cache miss, fetching from database
+[2025-12-11 13:02:29] DEBUG - Starting transaction
+[2025-12-11 13:07:58] DEBUG - Request completed successfully
+[2025-12-11 13:06:43] INFO - Starting transaction
+[2025-12-11 13:02:32] DEBUG - Starting transaction
+[2025-12-11 13:09:09] WARN - Starting transaction
+[2025-12-11 13:05:34] INFO - Request completed successfully
+[2025-12-11 13:07:57] DEBUG - Processing request
+[2025-12-11 13:02:36] INFO - Committing transaction
+[2025-12-11 13:08:13] INFO - Committing transaction
+[2025-12-11 13:09:59] DEBUG - Committing transaction

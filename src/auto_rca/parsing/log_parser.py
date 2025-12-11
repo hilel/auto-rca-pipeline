@@ -93,6 +93,19 @@ class LogParser:
             if field in log_entry and log_entry[field]:
                 parsed['log_level'] = str(log_entry[field]).upper()
         
+        # Extract user_id, request_id, session_id directly from JSON
+        if 'user_id' in log_entry and log_entry['user_id']:
+            parsed['user_id'] = log_entry['user_id']
+        
+        if 'request_id' in log_entry and log_entry['request_id']:
+            parsed['request_id'] = log_entry['request_id']
+        
+        if 'session_id' in log_entry and log_entry['session_id']:
+            parsed['session_id'] = log_entry['session_id']
+        
+        if 'ip_address' in log_entry and log_entry['ip_address']:
+            parsed['ip_address'] = log_entry['ip_address']
+        
         for field in message_fields:
             if field in log_entry and log_entry[field]:
                 return str(log_entry[field])
