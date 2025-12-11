@@ -205,3 +205,11 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Auto-RCA Pipeline specific
+data/raw/
+data/test/
+data/processed/
+data/models/
+*.h5
+*.pkl
