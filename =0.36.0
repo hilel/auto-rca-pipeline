@@ -1,5 +1,0 @@
-Defaulting to user installation because normal site-packages is not writeable
-Requirement already satisfied: starlette in /home/runner/.local/lib/python3.12/site-packages (0.35.1)
-Requirement already satisfied: anyio<5,>=3.4.0 in /home/runner/.local/lib/python3.12/site-packages (from starlette) (4.12.0)
-Requirement already satisfied: idna>=2.8 in /usr/lib/python3/dist-packages (from anyio<5,>=3.4.0->starlette) (3.6)
-Requirement already satisfied: typing_extensions>=4.5 in /home/runner/.local/lib/python3.12/site-packages (from anyio<5,>=3.4.0->starlette) (4.15.0)
