@@ -56,6 +56,26 @@ cd auto-rca-pipeline
 pip install -r requirements.txt
 ```
 
+**Note for Windows users**: If you encounter an error about Python 2.7, use one of these alternatives:
+```powershell
+# Option 1: Use python -m pip (recommended)
+# -m runs pip as a module, ensuring it uses the correct Python interpreter
+python -m pip install -r requirements.txt
+
+# Option 2: Use the virtual environment's Python directly (no activation needed)
+# Specifies the full path to the virtual environment's Python executable
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+# Option 3: Activate virtual environment first
+# Activates the .venv environment, then use pip normally
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+**Parameter explanations**:
+- `-m pip`: Runs pip as a Python module using the current Python interpreter
+- `-r requirements.txt`: Installs all packages listed in the requirements.txt file (`-r` means "requirements")
+
 ## 📖 Usage
 
 ### Command Line Interface
