@@ -1,7 +1,6 @@
 """Analysis endpoints"""
 
 from fastapi import APIRouter, File, UploadFile, HTTPException
-from fastapi.responses import JSONResponse
 from pathlib import Path
 import tempfile
 import shutil
@@ -131,11 +130,11 @@ async def analyze_uploaded_logs(
         # Clean up
         Path(tmp_path).unlink()
         
-        return JSONResponse(content={
-            "success": True,
-            "message": "Analysis completed successfully",
-            "data": results
-        })
+        return AnalysisResponse(
+            success=True,
+            message="Analysis completed successfully",
+            data=results
+        )
     
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

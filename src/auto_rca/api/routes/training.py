@@ -1,6 +1,6 @@
 """Model training endpoints"""
 
-from fastapi import APIRouter, HTTPException, BackgroundTasks, Query
+from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
 
 from auto_rca.api.schemas import TrainingResponse
@@ -35,7 +35,6 @@ router = APIRouter(tags=["Training"])
     }
 )
 async def train_model(
-    background_tasks: BackgroundTasks,
     log_path: str = Query(..., description="Path to training logs on the server"),
     is_directory: bool = Query(False, description="Set to true if log_path is a directory"),
     epochs: Optional[int] = Query(None, description="Number of training epochs (default: 50)"),

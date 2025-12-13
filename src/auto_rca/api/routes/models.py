@@ -1,7 +1,6 @@
 """Model management endpoints"""
 
 from fastapi import APIRouter, HTTPException, Query
-from fastapi.responses import JSONResponse
 from typing import Optional
 
 from auto_rca.api.schemas import ModelInfoResponse, LoadModelResponse
@@ -87,20 +86,20 @@ async def get_model_info():
         pipeline = get_pipeline()
         
         if not pipeline.analyzer.model:
-            return JSONResponse(content={
-                "success": True,
-                "message": "No model loaded",
-                "data": {
+            return ModelInfoResponse(
+                success=True,
+                message="No model loaded",
+                data={
                     "model_trained": False
                 }
-            })
+            )
         
         model_summary = pipeline.analyzer.get_model_summary()
         
-        return JSONResponse(content={
-            "success": True,
-            "message": "Model information retrieved",
-            "data": {
+        return ModelInfoResponse(
+            success=True,
+            message="Model information retrieved",
+            data={
                 "model_trained": pipeline.is_trained,
                 "model_summary": model_summary,
                 "config": {
@@ -111,7 +110,7 @@ async def get_model_info():
                     "sequence_length": settings.sequence_length
                 }
             }
-        })
+        )
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
