@@ -13,19 +13,91 @@ router = APIRouter(tags=["Training"])
     "/train",
     response_model=TrainingResponse,
     summary="Train LSTM model",
-    description="""
-    Train the LSTM model on provided logs for root cause analysis.
+    description="""Train a deep learning LSTM (Long Short-Term Memory) model for automated root cause analysis.
     
-    **Process:**
-    1. Load logs from the specified path
-    2. Process through ingestion, parsing, and sessionization
-    3. Vectorize sessions into numerical sequences
-    4. Train LSTM neural network
-    5. Save trained models to disk
+    **What is LSTM?**
+    LSTM is a type of Recurrent Neural Network (RNN) specifically designed to learn from sequential
+    data with long-term dependencies. Unlike traditional models, LSTMs maintain "memory cells" that
+    can remember important information across many time steps, making them ideal for log analysis
+    where context from previous events matters.
     
-    **Training time:** Depends on data size and epochs (typically 1-10 minutes for small datasets)
+    **Training Process - Deep Dive:**
     
-    **Note:** This will overwrite any existing trained models.
+    1. **Data Preprocessing:**
+       - Logs → Parsing → Sessions (sequences of related events)
+       - Each session becomes a training example
+    
+    2. **Text Vectorization (NLP):**
+       - Build vocabulary from unique log tokens (words/patterns)
+       - Convert text to numerical token IDs using tokenization
+       - Pad/truncate sequences to uniform length (required for batch processing)
+       - Creates dense word embeddings (learned representations)
+    
+    3. **Neural Network Architecture:**
+       - **Embedding Layer**: Converts token IDs → dense vectors (word embeddings)
+       - **LSTM Layers**: Learn temporal patterns and dependencies
+         - Hidden state: short-term memory of recent events
+         - Cell state: long-term memory of important patterns
+       - **Dense Output**: Binary classification (normal vs. error)
+         - Sigmoid activation outputs probability [0, 1]
+    
+    4. **Training Algorithm (Backpropagation Through Time):**
+       - Forward pass: Process each session sequence through network
+       - Loss calculation: Binary cross-entropy between predictions and actual labels
+       - Backward pass: Compute gradients and update weights
+       - Optimizer (Adam): Adaptive learning rate for efficient training
+    
+    5. **Model Persistence:**
+       - Save trained weights (HDF5 format)
+       - Save vectorizer vocabulary (pickle format)
+       - Both required for inference
+    
+    **Hyperparameters Explained:**
+    
+    - **epochs**: Number of complete passes through training data
+      - More epochs = more learning, but risk of overfitting
+      - Use validation loss to determine optimal number
+      - Default: 50 (good starting point for most datasets)
+    
+    - **batch_size**: Number of samples processed before weight update
+      - Larger batches: Faster training, more memory, less noisy gradients
+      - Smaller batches: Slower training, less memory, better generalization
+      - Default: 32 (balance between speed and stability)
+    
+    **Data Requirements:**
+    - Minimum: 1,000+ log entries (preferably 10,000+)
+    - Balanced dataset: 10-30% error logs, 70-90% normal logs
+    - Diverse patterns: Multiple types of errors for better generalization
+    - Representative data: Should match production log characteristics
+    
+    **Training Time Complexity:**
+    - O(n * e * s) where n=samples, e=epochs, s=sequence_length
+    - Typically 1-10 minutes for small datasets (< 50K logs)
+    - GPU acceleration can reduce training time by 10-100x
+    
+    **Evaluation Metrics:**
+    - **Loss**: Binary cross-entropy (lower is better)
+      - Measures how far predictions are from true labels
+      - Should decrease steadily during training
+    - **Accuracy**: Percentage of correct predictions
+      - > 90% is excellent for log analysis
+      - < 70% indicates need for more/better training data
+    
+    **Overfitting Prevention:**
+    - Model uses dropout (randomly disables neurons during training)
+    - Early stopping monitors validation loss
+    - Regularization prevents over-reliance on specific features
+    
+    **Note:** Training overwrites existing models. Consider backing up important models first.
+    
+    **Learn More:**
+    - [Understanding LSTM Networks](https://colah.github.io/posts/2015-08-Understanding-LSTMs/) - Visual explanation
+    - [Deep Learning Book - RNNs](https://www.deeplearningbook.org/contents/rnn.html) - Theoretical foundation
+    - [Keras LSTM Tutorial](https://keras.io/api/layers/recurrent_layers/lstm/) - Implementation details
+    - [Text Classification with RNNs](https://www.tensorflow.org/tutorials/text/text_classification_rnn) - Similar use case
+    - [Word Embeddings Explained](https://jalammar.github.io/illustrated-word2vec/) - Understanding embeddings
+    - [Backpropagation Through Time](https://machinelearningmastery.com/gentle-introduction-backpropagation-time/) - Training algorithm
+    - [Hyperparameter Tuning](https://cs231n.github.io/neural-networks-3/#hyper) - Optimization strategies
     """,
     response_description="Training results and saved model paths",
     responses={

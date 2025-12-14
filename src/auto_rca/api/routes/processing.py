@@ -15,15 +15,35 @@ router = APIRouter(tags=["Processing"])
     "/upload-logs",
     response_model=UploadResponse,
     summary="Upload and process logs",
-    description="""
-    Upload a log file for processing through the pipeline stages:
-    1. Ingestion - Read the uploaded file
-    2. Parsing - Extract structured information
-    3. Sessionization - Group logs into sessions
+    description="""Upload a log file for preprocessing and feature engineering.
     
-    **Supported formats:** .txt, .log, .json, .xml
+    **ML Pipeline Stages:**
     
-    **Note:** This endpoint does NOT perform ML analysis. Use `/analyze-upload` for analysis.
+    1. **Ingestion** - Raw data loading from multiple formats (.txt, .log, .json, .xml)
+    2. **Parsing** - Feature extraction: timestamps, log levels, messages, session IDs, exceptions
+    3. **Sessionization** - Temporal grouping of related events (critical for sequence learning)
+    
+    **Why Sessionization Matters for ML:**
+    LSTM networks learn from sequences, not individual log lines. Sessionization creates meaningful
+    sequences by grouping related logs based on session identifiers and temporal proximity. This
+    transforms unstructured log streams into structured sequential data that the LSTM can process.
+    
+    **Feature Engineering:**
+    The parsing stage extracts structured features that will later be vectorized (converted to numbers)
+    for neural network input. Key features include:
+    - Log level (INFO, WARN, ERROR) - indicates severity
+    - Exception types - strong predictors of failures
+    - Message patterns - learned through embeddings
+    - Temporal order - preserved for sequence learning
+    
+    **Note:** This endpoint performs data preprocessing only, not ML inference. Use `/analyze-upload`
+    for end-to-end analysis with model predictions.
+    
+    **Learn More:**
+    - [Feature Engineering for ML](https://developers.google.com/machine-learning/crash-course/representation/feature-engineering)
+    - [Time Series Preprocessing](https://machinelearningmastery.com/time-series-data-preparation/)
+    - [Log Sessionization Techniques](https://www.elastic.co/blog/how-to-sessionize-logs)
+    - [Sequence Data for RNNs](https://www.tensorflow.org/guide/keras/rnn)
     """,
     response_description="Processing results with session statistics",
     responses={
