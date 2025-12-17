@@ -211,6 +211,6 @@ data/raw/
 data/test/
 data/processed/
 data/models/
-data/config.db
+db/
 *.h5
 *.pkl

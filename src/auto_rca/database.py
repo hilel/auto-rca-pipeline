@@ -12,8 +12,8 @@ def get_connection() -> sqlite3.Connection:
     Returns:
         sqlite3.Connection: Connection to the config database
     """
-    # Ensure data directory exists
-    db_path = Path("data/config.db")
+    # Ensure db directory exists
+    db_path = Path("db/config.db")
     db_path.parent.mkdir(parents=True, exist_ok=True)
     
     conn = sqlite3.connect(str(db_path))

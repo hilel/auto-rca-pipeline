@@ -86,7 +86,7 @@ def main():
         demonstrate_configuration()
         
         print_section("Demo Complete!")
-        print("The session identifier configuration is now persisted in data/config.db")
+        print("The session identifier configuration is now persisted in db/config.db")
         print("This setting will be used by the SessionGrouper when processing logs.")
         
     except requests.exceptions.ConnectionError:

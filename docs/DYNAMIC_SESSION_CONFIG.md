@@ -7,7 +7,7 @@ The Auto-RCA Pipeline now supports dynamic configuration of the session identifi
 ## Features
 
 - **Dynamic Configuration**: Change the session identifier field via REST API
-- **Persistent Storage**: Configuration is stored in SQLite database (`data/config.db`)
+- **Persistent Storage**: Configuration is stored in SQLite database (`db/config.db`)
 - **Fallback Logic**: If the configured field is missing in a log entry, the system falls back to standard fields
 - **Zero Downtime**: Changes take effect immediately for new processing operations
 
@@ -166,7 +166,7 @@ python examples/config_demo.py
 
 ## Database Schema
 
-The configuration is stored in `data/config.db`:
+The configuration is stored in `db/config.db`:
 
 ```sql
 CREATE TABLE config (
@@ -182,7 +182,7 @@ INSERT INTO config (key, value) VALUES ('session_field', 'session_id');
 
 - Configuration persists across API restarts
 - Default value: `session_id`
-- Database location: `data/config.db` (automatically created)
+- Database location: `db/config.db` (automatically created)
 - Database is excluded from version control (`.gitignore`)
 
 ## Error Handling
