@@ -64,6 +64,7 @@ class SessionGrouper:
         
         for log in log_entries:
             # Priority: configured_field > session_id > request_id > user_id > ip_address
+            # Use truthiness check to skip None, empty strings, and other falsy values
             identifier = (
                 log.get(configured_field) or
                 log.get('session_id') or

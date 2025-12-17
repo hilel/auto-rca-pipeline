@@ -230,3 +230,36 @@ class TestSessionGrouper:
             session_ids = [s['session_id'] for s in sessions]
             assert 'session_1' in session_ids
             assert 'session_2' in session_ids
+    
+    def test_group_by_custom_field_empty_value_fallback(self):
+        """Test that empty string values in configured field trigger fallback"""
+        from unittest.mock import patch
+        base_time = datetime.now()
+        
+        # Mock the get_session_field to return 'token'
+        with patch('auto_rca.sessionization.session_grouper.get_session_field') as mock_get:
+            mock_get.return_value = 'token'
+            
+            log_entries = [
+                {
+                    'timestamp': base_time.isoformat(),
+                    'token': '',  # Empty string should trigger fallback
+                    'user_id': 'user_1',
+                    'log_level': 'INFO',
+                    'message': 'Message 1'
+                },
+                {
+                    'timestamp': (base_time + timedelta(seconds=10)).isoformat(),
+                    'token': 'token_1',  # Valid token
+                    'log_level': 'INFO',
+                    'message': 'Message 2'
+                },
+            ]
+            
+            sessions = self.grouper.group_by_session(log_entries)
+            
+            # Should create 2 sessions: user_1 (fallback from empty token) and token_1
+            assert len(sessions) == 2
+            session_ids = [s['session_id'] for s in sessions]
+            assert 'user_1' in session_ids
+            assert 'token_1' in session_ids
