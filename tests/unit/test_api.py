@@ -211,6 +211,76 @@ class TestSchemas:
         assert response.data["raw_log_count"] == 100
 
 
+class TestConfigurationEndpoints:
+    """Test cases for configuration endpoints"""
+    
+    def test_get_session_field_default(self, client):
+        """Test getting default session field"""
+        from unittest.mock import patch
+        
+        with patch('auto_rca.api.routes.configuration.get_session_field') as mock_get:
+            mock_get.return_value = 'session_id'
+            
+            response = client.get("/config/session-field")
+            assert response.status_code == 200
+            data = response.json()
+            assert data["success"] is True
+            assert data["data"]["session_field"] == "session_id"
+    
+    def test_get_session_field_custom(self, client):
+        """Test getting custom session field"""
+        from unittest.mock import patch
+        
+        with patch('auto_rca.api.routes.configuration.get_session_field') as mock_get:
+            mock_get.return_value = 'token'
+            
+            response = client.get("/config/session-field")
+            assert response.status_code == 200
+            data = response.json()
+            assert data["success"] is True
+            assert data["data"]["session_field"] == "token"
+    
+    def test_update_session_field(self, client):
+        """Test updating session field"""
+        from unittest.mock import patch
+        
+        with patch('auto_rca.api.routes.configuration.set_session_field') as mock_set:
+            response = client.post(
+                "/config/session-field",
+                json={"session_field": "order_id"}
+            )
+            
+            assert response.status_code == 200
+            data = response.json()
+            assert data["success"] is True
+            assert data["data"]["session_field"] == "order_id"
+            mock_set.assert_called_once_with("order_id")
+    
+    def test_get_session_field_error(self, client):
+        """Test error handling when getting session field fails"""
+        from unittest.mock import patch
+        
+        with patch('auto_rca.api.routes.configuration.get_session_field') as mock_get:
+            mock_get.side_effect = Exception("Database error")
+            
+            response = client.get("/config/session-field")
+            assert response.status_code == 500
+    
+    def test_update_session_field_error(self, client):
+        """Test error handling when updating session field fails"""
+        from unittest.mock import patch
+        
+        with patch('auto_rca.api.routes.configuration.set_session_field') as mock_set:
+            mock_set.side_effect = Exception("Database error")
+            
+            response = client.post(
+                "/config/session-field",
+                json={"session_field": "token"}
+            )
+            
+            assert response.status_code == 500
+
+
 class TestDependencies:
     """Test cases for API dependencies"""
     

@@ -4,6 +4,8 @@ from typing import List, Dict, Any
 from datetime import datetime, timedelta
 from collections import defaultdict
 
+from auto_rca.repositories import get_session_field
+
 
 class SessionGrouper:
     """Groups log entries into sessions based on user/request IDs and timestamps"""
@@ -53,9 +55,18 @@ class SessionGrouper:
         """Group logs by session/request/user/IP identifiers"""
         groups = defaultdict(list)
         
+        # Get the configured session field dynamically
+        try:
+            configured_field = get_session_field()
+        except Exception:
+            # Fallback to default if database access fails
+            configured_field = 'session_id'
+        
         for log in log_entries:
-            # Priority: session_id > request_id > user_id > ip_address
+            # Priority: configured_field > session_id > request_id > user_id > ip_address
+            # Use truthiness check to skip None, empty strings, and other falsy values
             identifier = (
+                log.get(configured_field) or
                 log.get('session_id') or
                 log.get('request_id') or
                 log.get('user_id') or

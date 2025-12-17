@@ -45,6 +45,7 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+coverage.json
 *.cover
 *.py.cover
 .hypothesis/
@@ -211,5 +212,6 @@ data/raw/
 data/test/
 data/processed/
 data/models/
+db/
 *.h5
 *.pkl
