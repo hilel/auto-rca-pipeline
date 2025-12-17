@@ -3,12 +3,14 @@
 from fastapi import FastAPI
 
 from auto_rca.config import settings
+from auto_rca.database import init_db
 from auto_rca.api.routes import (
     health_router,
     processing_router,
     training_router,
     analysis_router,
     models_router,
+    configuration_router,
 )
 
 # Initialize FastAPI app with enhanced OpenAPI metadata
@@ -62,9 +64,19 @@ Transform chaotic production logs into actionable insights with our 5-stage ETL-
         {
             "name": "Models",
             "description": "Model management and information"
+        },
+        {
+            "name": "Configuration",
+            "description": "Configuration management endpoints"
         }
     ]
 )
+
+# Initialize database on startup
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database and other startup tasks"""
+    init_db()
 
 # Include routers
 app.include_router(health_router)
@@ -72,6 +84,7 @@ app.include_router(processing_router)
 app.include_router(training_router)
 app.include_router(analysis_router)
 app.include_router(models_router)
+app.include_router(configuration_router)
 
 
 if __name__ == "__main__":

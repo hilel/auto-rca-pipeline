@@ -164,3 +164,35 @@ class LoadModelResponse(BaseModel):
     success: bool = Field(..., description="Whether the load was successful")
     message: str = Field(..., description="Load status message")
     data: Dict[str, Any] = Field(..., description="Model status after loading")
+
+
+class ConfigRequest(BaseModel):
+    """Request model for configuration updates"""
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "session_field": "token"
+            }
+        }
+    )
+    
+    session_field: str = Field(..., description="Field name to use for session identification")
+
+
+class ConfigResponse(BaseModel):
+    """Response model for configuration operations"""
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "success": True,
+                "message": "Configuration retrieved successfully",
+                "data": {
+                    "session_field": "session_id"
+                }
+            }
+        }
+    )
+    
+    success: bool = Field(..., description="Whether the operation was successful")
+    message: str = Field(..., description="Status message")
+    data: Dict[str, Any] = Field(..., description="Configuration data")
